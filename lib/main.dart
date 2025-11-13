@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 // firebase_core initialized in servicios/firebase_servicio.dart
-import 'pantallas/inicio.dart';
+import 'pantallas/landing_page.dart';
 import 'pantallas/login.dart';
 import 'pantallas/admin_socios.dart';
 import 'pantallas/admin_eventos.dart';
@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: '/',
         routes: {
-          '/': (context) => const InicioPantalla(),
+          '/': (context) => const LandingPage(),
           '/login': (context) => const LoginPantalla(),
           '/admin_inicio': (context) => const AdminInicioPantalla(),
           '/admin_socios': (context) => const AdminSociosPantalla(),

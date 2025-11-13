@@ -50,10 +50,20 @@ class _ContactarAdminPantallaState extends State<ContactarAdminPantalla> {
 
       await DBServicio.crearAsunto(asunto);
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Enviado al administrador')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Asunto enviado exitosamente'),
+          backgroundColor: Colors.green,
+        ),
+      );
       Navigator.of(context).pop();
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error al enviar: $e')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error al enviar: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
     } finally {
       if (mounted) setState(() => _enviando = false);
     }
@@ -63,49 +73,279 @@ class _ContactarAdminPantallaState extends State<ContactarAdminPantalla> {
   Widget build(BuildContext context) {
     final auth = Provider.of<AuthService>(context);
     return Scaffold(
+      backgroundColor: const Color(0xFFF5F7FA),
       appBar: AppBar(
-        title: const Text('Contactar al administrador'),
+        backgroundColor: const Color(0xFF0404B9),
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text(
+          'Contactar Administración',
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
         actions: [
           IconButton(
             onPressed: () async {
               await auth.cerrarSesion();
               Navigator.pushReplacementNamed(context, '/');
             },
-            icon: const Icon(Icons.logout),
+            icon: const Icon(Icons.logout, color: Colors.white),
+            tooltip: 'Cerrar sesión',
           )
         ],
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Form(
           key: _formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextFormField(
-                controller: _asuntoCtrl,
-                decoration: const InputDecoration(labelText: 'Asunto'),
-                validator: (v) => (v == null || v.trim().isEmpty) ? 'Ingrese un asunto' : null,
+              // Sección de introducción
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF010188), Color(0xFF0404B9)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.mail, color: Colors.white, size: 28),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Envía tu consulta',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'La administración revisará tu mensaje',
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: Colors.white.withValues(alpha: 0.9),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 12),
-              Expanded(
+              const SizedBox(height: 24),
+
+              // Campo Asunto
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.08),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: TextFormField(
+                  controller: _asuntoCtrl,
+                  decoration: InputDecoration(
+                    labelText: 'Asunto',
+                    labelStyle: const TextStyle(color: Color(0xFF0404B9)),
+                    prefixIcon: const Icon(
+                      Icons.subject,
+                      color: Color(0xFF0404B9),
+                    ),
+                    hintText: 'Ej: Consulta sobre inscripción',
+                    hintStyle: TextStyle(color: Colors.grey[400]),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(
+                        color: Color(0xFF0404B9),
+                        width: 1.5,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: Colors.grey[300]!,
+                        width: 1,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(
+                        color: Color(0xFF0404B9),
+                        width: 2,
+                      ),
+                    ),
+                    filled: true,
+                    fillColor: const Color(0xFF0404B9).withValues(alpha: 0.02),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 16,
+                    ),
+                  ),
+                  validator: (v) =>
+                      (v == null || v.trim().isEmpty) ? 'Ingrese un asunto' : null,
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              // Campo Descripción
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.08),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
                 child: TextFormField(
                   controller: _descripcionCtrl,
-                  decoration: const InputDecoration(labelText: 'Descripción'),
-                  maxLines: null,
-                  expands: true,
-                  keyboardType: TextInputType.multiline,
-                  validator: (v) => (v == null || v.trim().isEmpty) ? 'Ingrese una descripción' : null,
+                  maxLines: 5,
+                  decoration: InputDecoration(
+                    labelText: 'Descripción',
+                    labelStyle: const TextStyle(color: Color(0xFF0404B9)),
+                    prefixIcon: const Padding(
+                      padding: EdgeInsets.only(right: 16),
+                      child: Icon(
+                        Icons.description,
+                        color: Color(0xFF0404B9),
+                      ),
+                    ),
+                    hintText: 'Cuéntanos con detalle tu consulta...',
+                    hintStyle: TextStyle(color: Colors.grey[400]),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(
+                        color: Color(0xFF0404B9),
+                        width: 1.5,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: Colors.grey[300]!,
+                        width: 1,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(
+                        color: Color(0xFF0404B9),
+                        width: 2,
+                      ),
+                    ),
+                    filled: true,
+                    fillColor: const Color(0xFF0404B9).withValues(alpha: 0.02),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 16,
+                    ),
+                  ),
+                  validator: (v) =>
+                      (v == null || v.trim().isEmpty) ? 'Ingrese una descripción' : null,
                 ),
               ),
-              const SizedBox(height: 12),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  icon: _enviando ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white)) : const Icon(Icons.send),
-                  label: const Text('Enviar'),
-                  onPressed: _enviando ? null : () => _enviar(context),
-                ),
-              )
+              const SizedBox(height: 24),
+
+              // Botones
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: _enviando ? null : () => Navigator.pop(context),
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        side: const BorderSide(
+                          color: Color(0xFF0404B9),
+                          width: 2,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: const Text(
+                        'Cancelar',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF0404B9),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFF010188), Color(0xFF0404B9)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFF0404B9).withValues(alpha: 0.3),
+                            blurRadius: 12,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: ElevatedButton(
+                        onPressed: _enviando ? null : () => _enviar(context),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: _enviando
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  valueColor: AlwaysStoppedAnimation(Colors.white),
+                                ),
+                              )
+                            : const Text(
+                                'Enviar',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'dart:convert';
 import '../servicios/auth_servicio.dart';
 import '../servicios/db_servicio.dart';
 import '../modelos/modelo_asunto.dart';
@@ -79,10 +80,24 @@ class AdminAsuntosPantalla extends StatelessWidget {
                         CircleAvatar(
                           radius: 24,
                           backgroundColor: Theme.of(context).colorScheme.secondary,
-                          child: Text(
-                            '${a.nombre.isNotEmpty ? a.nombre[0] : ''}${a.apellido.isNotEmpty ? a.apellido[0] : ''}'.toUpperCase(),
-                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                          ),
+                          child: (a.fotoBase64 != null && a.fotoBase64!.isNotEmpty)
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(24),
+                                  child: Image.memory(
+                                    base64Decode(a.fotoBase64!),
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Text(
+                                        '${a.nombre.isNotEmpty ? a.nombre[0] : ''}${a.apellido.isNotEmpty ? a.apellido[0] : ''}'.toUpperCase(),
+                                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
+                                      );
+                                    },
+                                  ),
+                                )
+                              : Text(
+                                  '${a.nombre.isNotEmpty ? a.nombre[0] : ''}${a.apellido.isNotEmpty ? a.apellido[0] : ''}'.toUpperCase(),
+                                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                                ),
                         ),
                         const SizedBox(width: 12),
                         Expanded(

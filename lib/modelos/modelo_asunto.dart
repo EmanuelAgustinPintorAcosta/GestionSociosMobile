@@ -10,6 +10,7 @@ class ModeloAsunto {
   String descripcion;
   Timestamp fecha;
   bool leido;
+  String? fotoBase64;
 
   ModeloAsunto({
     this.id,
@@ -21,6 +22,7 @@ class ModeloAsunto {
     required this.descripcion,
     Timestamp? fecha,
     this.leido = false,
+    this.fotoBase64,
   }) : fecha = fecha ?? Timestamp.now();
 
   Map<String, dynamic> toMap() => {
@@ -32,6 +34,7 @@ class ModeloAsunto {
         'descripcion': descripcion,
         'fecha': fecha,
         'leido': leido,
+        if (fotoBase64 != null && fotoBase64!.isNotEmpty) 'fotoBase64': fotoBase64,
       };
 
   static ModeloAsunto fromMap(Map<String, dynamic> map) {
@@ -43,6 +46,7 @@ class ModeloAsunto {
       descripcion: map['descripcion'] ?? '',
       fecha: map['fecha'] is Timestamp ? map['fecha'] as Timestamp : Timestamp.now(),
       leido: map['leido'] ?? false,
+      fotoBase64: map['fotoBase64'] as String?,
     )..id = map['id'] ?? map['uid'];
   }
 }

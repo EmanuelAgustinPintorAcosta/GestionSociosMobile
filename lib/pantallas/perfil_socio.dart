@@ -1,10 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
+import 'dart:typed_data';
+import 'dart:convert';
 import '../servicios/auth_servicio.dart';
+import '../servicios/db_servicio.dart';
+import '../widgets/actualizador_foto.dart';
 
-class PerfilSocioPantalla extends StatelessWidget {
+class PerfilSocioPantalla extends StatefulWidget {
   const PerfilSocioPantalla({super.key});
+
+  @override
+  State<PerfilSocioPantalla> createState() => _PerfilSocioPantallaState();
+}
+
+class _PerfilSocioPantallaState extends State<PerfilSocioPantalla> {
+  bool _cargando = false;
+
+  Future<void> _subirFoto(Uint8List imageBytes, String uid) async {
+    setState(() => _cargando = true);
+    try {
+      // Convertir bytes a Base64
+      final fotoBase64 = base64Encode(imageBytes);
+      
+      // Guardar Base64 en Firestore
+      await DBServicio.actualizarFotoBase64(uid, fotoBase64);
+      
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Foto actualizada exitosamente')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error al subir foto: $e')),
+      );
+    } finally {
+      if (mounted) setState(() => _cargando = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,34 +75,29 @@ class PerfilSocioPantalla extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 36,
-                            backgroundColor: const Color(0xFF001D5A),
-                            child: Text(
-                              '${(data['nombre'] ?? '').toString().isNotEmpty ? (data['nombre'][0] ?? '') : ''}${(data['apellido'] ?? '').toString().isNotEmpty ? (data['apellido'][0] ?? '') : ''}'.toUpperCase(),
-                              style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '${data['nombre'] ?? ''} ${data['apellido'] ?? ''}',
-                                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(height: 6),
-                                Text(
-                                  data['email'] ?? '',
-                                  style: TextStyle(color: Colors.grey[700]),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
+                      // Sección de foto de perfil
+                      Center(
+                        child: _cargando
+                            ? const CircularProgressIndicator()
+                            : ActualizadorFoto(
+                                fotoBase64: (data['fotoBase64'] as String?)?.isNotEmpty == true
+                                    ? data['fotoBase64'] as String
+                                    : null,
+                                onFotoSeleccionada: (file) => _subirFoto(file, uid),
+                              ),
+                      ),
+                      const SizedBox(height: 20),
+                      Divider(color: Colors.grey[300]),
+                      const SizedBox(height: 16),
+                      // Información del usuario
+                      Text(
+                        '${data['nombre'] ?? ''} ${data['apellido'] ?? ''}',
+                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        data['email'] ?? '',
+                        style: TextStyle(color: Colors.grey[700]),
                       ),
                       const SizedBox(height: 16),
                       Divider(color: Colors.grey[300]),

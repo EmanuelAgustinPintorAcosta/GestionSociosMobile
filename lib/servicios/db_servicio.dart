@@ -12,6 +12,11 @@ class DBServicio {
         snap.docs.map((d) => ModeloSocio.fromMap(d.data()..['uid'] = d.id)).toList());
   }
 
+  static Future<Map<String, dynamic>?> obtenerSocio(String uid) async {
+    final doc = await _db.collection('usuarios').doc(uid).get();
+    return doc.data();
+  }
+
   static Future<void> crearSocio(ModeloSocio s) async {
     if (s.uid != null && s.uid!.isNotEmpty) {
       await _db.collection('usuarios').doc(s.uid).set(s.toMap());
@@ -23,6 +28,14 @@ class DBServicio {
   static Future<void> actualizarSocio(ModeloSocio s) async {
     if (s.uid == null) throw Exception('Socio sin uid');
     await _db.collection('usuarios').doc(s.uid).update(s.toMap());
+  }
+
+  static Future<void> actualizarFotoPerfil(String uid, String fotoUrl) async {
+    await _db.collection('usuarios').doc(uid).update({'fotoUrl': fotoUrl});
+  }
+
+  static Future<void> actualizarFotoBase64(String uid, String fotoBase64) async {
+    await _db.collection('usuarios').doc(uid).update({'fotoBase64': fotoBase64});
   }
 
   static Future<void> eliminarSocio(String uid) async {

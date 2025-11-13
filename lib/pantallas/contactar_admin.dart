@@ -33,16 +33,21 @@ class _ContactarAdminPantallaState extends State<ContactarAdminPantalla> {
     final email = usuario?.email ?? '';
     final uid = usuario?.uid;
 
-    final asunto = ModeloAsunto(
-      uidSocio: uid,
-      nombre: nombre.split(' ').isNotEmpty ? nombre.split(' ').first : '',
-      apellido: nombre.split(' ').length > 1 ? nombre.split(' ').sublist(1).join(' ') : '',
-      email: email,
-      asunto: _asuntoCtrl.text.trim(),
-      descripcion: _descripcionCtrl.text.trim(),
-    );
-
     try {
+      // Obtener datos del socio incluyendo fotoBase64
+      final docSocio = await DBServicio.obtenerSocio(uid ?? '');
+      final fotoBase64 = (docSocio?['fotoBase64'] as String?) ?? '';
+
+      final asunto = ModeloAsunto(
+        uidSocio: uid,
+        nombre: nombre.split(' ').isNotEmpty ? nombre.split(' ').first : '',
+        apellido: nombre.split(' ').length > 1 ? nombre.split(' ').sublist(1).join(' ') : '',
+        email: email,
+        asunto: _asuntoCtrl.text.trim(),
+        descripcion: _descripcionCtrl.text.trim(),
+        fotoBase64: fotoBase64.isNotEmpty ? fotoBase64 : null,
+      );
+
       await DBServicio.crearAsunto(asunto);
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Enviado al administrador')));

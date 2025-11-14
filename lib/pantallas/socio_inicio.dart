@@ -12,7 +12,6 @@ class SocioInicioPantalla extends StatelessWidget {
       backgroundColor: const Color(0xFFF5F7FA),
       body: Column(
         children: [
-          // ===== HEADER =====
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -67,14 +66,12 @@ class SocioInicioPantalla extends StatelessWidget {
             ),
           ),
 
-          // ===== CONTENIDO =====
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(24),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Botón Ver Eventos
                   _buildMenuButton(
                     context,
                     icon: Icons.event,
@@ -83,7 +80,6 @@ class SocioInicioPantalla extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
 
-                  // Botón Contactarse con Admin
                   _buildMenuButton(
                     context,
                     icon: Icons.email,
@@ -91,8 +87,7 @@ class SocioInicioPantalla extends StatelessWidget {
                     onPressed: () => Navigator.pushNamed(context, '/contactar_admin'),
                   ),
                   const SizedBox(height: 16),
-
-                  // Botón Mi Perfil
+  
                   _buildMenuButton(
                     context,
                     icon: Icons.person,

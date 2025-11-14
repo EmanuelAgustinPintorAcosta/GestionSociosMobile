@@ -107,7 +107,6 @@ class _PerfilSocioPantallaState extends State<PerfilSocioPantalla> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Sección de foto de perfil
                 Center(
                   child: Container(
                     decoration: BoxDecoration(
@@ -132,7 +131,6 @@ class _PerfilSocioPantallaState extends State<PerfilSocioPantalla> {
                 ),
                 const SizedBox(height: 28),
 
-                // Tarjeta de información
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -149,7 +147,6 @@ class _PerfilSocioPantallaState extends State<PerfilSocioPantalla> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Nombre y apellido
                       Text(
                         '${data['nombre'] ?? ''} ${data['apellido'] ?? ''}',
                         style: const TextStyle(
@@ -168,7 +165,6 @@ class _PerfilSocioPantallaState extends State<PerfilSocioPantalla> {
                       ),
                       const Divider(height: 24),
 
-                      // DNI
                       Row(
                         children: [
                           Container(
@@ -208,7 +204,6 @@ class _PerfilSocioPantallaState extends State<PerfilSocioPantalla> {
                       ),
                       const SizedBox(height: 16),
 
-                      // Rol
                       Row(
                         children: [
                           Container(

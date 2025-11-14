@@ -24,7 +24,6 @@ class ModeloSocio {
       uid: m['uid']?.toString(),
       nombre: (m['nombre'] ?? '') as String,
       apellido: (m['apellido'] ?? '') as String,
-      // `dni` puede venir como int (desde Firestore) o como String; normalizamos a int
       dni: m['dni'] is int
         ? m['dni'] as int
         : int.tryParse((m['dni'] ?? '').toString()) ?? 0,

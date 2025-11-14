@@ -9,7 +9,7 @@ class AuthService extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  // No se cachean credenciales: usamos instancia secundaria para crear usuarios
+ 
 
   User? get usuario => _auth.currentUser;
 
@@ -22,19 +22,16 @@ class AuthService extends ChangeNotifier {
     final doc = await _db.collection('usuarios').doc(uid).get();
     final data = doc.data();
     final rol = data != null && data['rol'] != null ? data['rol'] as String : 'socio';
-    // No cacheamos credenciales; las creaciones de usuario no cambiarán la sesión
     notifyListeners();
     return rol;
   }
 
   Future<void> cerrarSesion() async {
-    // Cerrar sesión principal
     await _auth.signOut();
     notifyListeners();
   }
 
-  // Crea un socio en Auth y en Firestore. Nota: crear usuario desde cliente
-  // firma al nuevo usuario; reautentica con credenciales admin en memoria.
+  
   Future<void> crearSocio({
     required String nombre,
     required String apellido,
@@ -43,9 +40,7 @@ class AuthService extends ChangeNotifier {
     required String password,
     String rol = 'socio',
   }) async {
-    // Creamos una instancia secundaria de FirebaseApp para realizar la
-    // creación del usuario y la escritura del documento desde esa instancia.
-    // De este modo la sesión del usuario principal (el admin) no se ve afectada.
+    // aca tuve que crear una instancia secundaria de FirebaseApp para crear el socio asi la sesión del admin no se cierra
     final String appName = 'secondary_${DateTime.now().millisecondsSinceEpoch}';
     final FirebaseApp secondaryApp = await Firebase.initializeApp(
       name: appName,
@@ -54,12 +49,12 @@ class AuthService extends ChangeNotifier {
 
     try {
       final FirebaseAuth secondaryAuth = FirebaseAuth.instanceFor(app: secondaryApp);
-      // Crear el usuario en Auth usando la instancia secundaria
+      // aca se crea el usuario en Auth usando la instancia secundaria
       final authResult = await secondaryAuth.createUserWithEmailAndPassword(email: email, password: password);
       final nuevo = authResult.user;
       if (nuevo == null) throw Exception('No se creó el usuario');
 
-      // Escribir el documento de usuario usando la instancia secundaria de Firestore
+      // aca se escribe el documento de usuario usando la instancia secundaria de Firestore
       final FirebaseFirestore secondaryDb = FirebaseFirestore.instanceFor(app: secondaryApp);
       await secondaryDb.collection('usuarios').doc(nuevo.uid).set({
         'nombre': nombre,
@@ -69,15 +64,14 @@ class AuthService extends ChangeNotifier {
         'email': email,
         'uid': nuevo.uid,
       });
-
-      // Cerrar sesión en la instancia secundaria para limpiar su estado
+      // con esto logro cerrar sesion en la instancia secu para clean estado
       await secondaryAuth.signOut();
     } finally {
-      // Borrar la app secundaria (libera recursos)
+      // aca borro la secu
       await secondaryApp.delete();
     }
 
-    // No tocamos la sesión principal (_auth) — el admin permanece logueado.
+    
     notifyListeners();
   }
 }

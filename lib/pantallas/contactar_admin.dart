@@ -34,7 +34,6 @@ class _ContactarAdminPantallaState extends State<ContactarAdminPantalla> {
     final uid = usuario?.uid;
 
     try {
-      // Obtener datos del socio incluyendo fotoBase64
       final docSocio = await DBServicio.obtenerSocio(uid ?? '');
       final fotoBase64 = (docSocio?['fotoBase64'] as String?) ?? '';
 
@@ -107,7 +106,6 @@ class _ContactarAdminPantallaState extends State<ContactarAdminPantalla> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Sección de introducción
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
@@ -150,7 +148,6 @@ class _ContactarAdminPantallaState extends State<ContactarAdminPantalla> {
               ),
               const SizedBox(height: 24),
 
-              // Campo Asunto
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -208,7 +205,6 @@ class _ContactarAdminPantallaState extends State<ContactarAdminPantalla> {
               ),
               const SizedBox(height: 16),
 
-              // Campo Descripción
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -270,7 +266,6 @@ class _ContactarAdminPantallaState extends State<ContactarAdminPantalla> {
               ),
               const SizedBox(height: 24),
 
-              // Botones
               Row(
                 children: [
                   Expanded(

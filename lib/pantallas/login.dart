@@ -25,7 +25,6 @@ class _LoginPantallaState extends State<LoginPantalla> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // ===== HEADER CON BOTÓN ATRÁS =====
             Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
@@ -64,7 +63,6 @@ class _LoginPantallaState extends State<LoginPantalla> {
               ),
             ),
 
-            // ===== FORMULARIO =====
             Padding(
               padding: const EdgeInsets.all(24),
               child: Form(
@@ -72,7 +70,6 @@ class _LoginPantallaState extends State<LoginPantalla> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    // Logo animado
                     AnimatedOpacity(
                       opacity: _logoVisible ? 1 : 0,
                       duration: const Duration(milliseconds: 600),
@@ -93,7 +90,6 @@ class _LoginPantallaState extends State<LoginPantalla> {
                       ),
                     ),
 
-                    // Email
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
@@ -131,7 +127,6 @@ class _LoginPantallaState extends State<LoginPantalla> {
                     ),
                     const SizedBox(height: 20),
 
-                    // Contraseña
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
@@ -176,7 +171,6 @@ class _LoginPantallaState extends State<LoginPantalla> {
                     ),
                     const SizedBox(height: 32),
 
-                    // Botón Ingresar
                     _cargando
                         ? const Center(
                             child: CircularProgressIndicator(
@@ -253,7 +247,6 @@ class _LoginPantallaState extends State<LoginPantalla> {
   @override
   void initState() {
     super.initState();
-    // Animar logo al cargar
     Future.delayed(const Duration(milliseconds: 150), () {
       if (mounted) setState(() => _logoVisible = true);
     });

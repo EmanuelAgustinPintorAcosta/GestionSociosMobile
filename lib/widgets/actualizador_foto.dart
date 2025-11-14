@@ -24,7 +24,7 @@ class _ActualizadorFotoState extends State<ActualizadorFoto> {
   Future<void> _tomarFoto() async {
     final XFile? foto = await _picker.pickImage(
       source: ImageSource.camera,
-      imageQuality: 95, // Máxima calidad (0-100)
+      imageQuality: 95, 
     );
     if (foto != null) {
       final Uint8List bytes = await foto.readAsBytes();
@@ -38,7 +38,7 @@ class _ActualizadorFotoState extends State<ActualizadorFoto> {
   Future<void> _seleccionarGaleria() async {
     final XFile? foto = await _picker.pickImage(
       source: ImageSource.gallery,
-      imageQuality: 95, // Máxima calidad (0-100)
+      imageQuality: 95, 
     );
     if (foto != null) {
       final Uint8List bytes = await foto.readAsBytes();
@@ -53,7 +53,7 @@ class _ActualizadorFotoState extends State<ActualizadorFoto> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Mostrar foto actual o placeholder
+        
         Container(
           width: 120,
           height: 120,
@@ -81,11 +81,9 @@ class _ActualizadorFotoState extends State<ActualizadorFoto> {
                   : const Icon(Icons.person, size: 60, color: Color(0xFF001D5A))),
         ),
         const SizedBox(height: 16),
-        // Botones para seleccionar foto
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // En web, no mostrar botón de cámara (no soportado)
             if (!kIsWeb)
               ElevatedButton.icon(
                 onPressed: _tomarFoto,

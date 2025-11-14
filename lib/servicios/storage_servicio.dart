@@ -11,15 +11,13 @@ class StorageServicio {
       final metadata = SettableMetadata(
         contentType: 'image/jpeg',
         customMetadata: {'uploadedBy': 'flutter_app'},
-        cacheControl: 'max-age=3600', // 1 hora de cache
+        cacheControl: 'max-age=3600', 
       );
       
       await ref.putData(imageBytes, metadata);
       
-      // Obtener URL con parámetro alt=media para evitar CORS en web
       final downloadURL = await ref.getDownloadURL();
       
-      // Firebase Storage URL - funciona en web sin CORS si usamos correctamente
       return downloadURL;
     } on FirebaseException catch (e) {
       throw Exception('Error al subir foto: ${e.message}');

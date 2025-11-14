@@ -65,7 +65,6 @@ class _FormularioEventoState extends State<FormularioEvento> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Título del formulario
                 Text(
                   widget.evento == null ? 'Crear Evento' : 'Editar Evento',
                   style: const TextStyle(
@@ -76,7 +75,6 @@ class _FormularioEventoState extends State<FormularioEvento> {
                 ),
                 const SizedBox(height: 24),
 
-                // Campo Título
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
@@ -96,7 +94,6 @@ class _FormularioEventoState extends State<FormularioEvento> {
                 ),
                 const SizedBox(height: 16),
 
-                // Campo Descripción
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
@@ -117,7 +114,6 @@ class _FormularioEventoState extends State<FormularioEvento> {
                 ),
                 const SizedBox(height: 16),
 
-                // Selector de Fecha
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
@@ -201,7 +197,6 @@ class _FormularioEventoState extends State<FormularioEvento> {
                 ),
                 const SizedBox(height: 28),
 
-                // Botones de acción
                 Row(
                   children: [
                     Expanded(

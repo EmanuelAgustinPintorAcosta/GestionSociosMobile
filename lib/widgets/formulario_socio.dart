@@ -76,7 +76,6 @@ class _FormularioSocioState extends State<FormularioSocio> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Título del formulario
                 Text(
                   widget.socio == null ? 'Crear Socio' : 'Editar Socio',
                   style: const TextStyle(
@@ -87,7 +86,6 @@ class _FormularioSocioState extends State<FormularioSocio> {
                 ),
                 const SizedBox(height: 24),
 
-                // Nombre
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
@@ -107,7 +105,6 @@ class _FormularioSocioState extends State<FormularioSocio> {
                 ),
                 const SizedBox(height: 12),
 
-                // Apellido
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
@@ -127,7 +124,6 @@ class _FormularioSocioState extends State<FormularioSocio> {
                 ),
                 const SizedBox(height: 12),
 
-                // DNI
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
@@ -148,7 +144,6 @@ class _FormularioSocioState extends State<FormularioSocio> {
                 ),
                 const SizedBox(height: 12),
 
-                // Email
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
@@ -170,7 +165,6 @@ class _FormularioSocioState extends State<FormularioSocio> {
                 ),
                 const SizedBox(height: 12),
 
-                // Contraseña
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
@@ -195,7 +189,6 @@ class _FormularioSocioState extends State<FormularioSocio> {
                 ),
                 const SizedBox(height: 12),
 
-                // Rol
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
@@ -249,7 +242,6 @@ class _FormularioSocioState extends State<FormularioSocio> {
                 ),
                 const SizedBox(height: 28),
 
-                // Botones de acción
                 Row(
                   children: [
                     Expanded(

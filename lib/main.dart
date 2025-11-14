@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// firebase_core initialized in servicios/firebase_servicio.dart
 import 'pantallas/landing_page.dart';
 import 'pantallas/login.dart';
 import 'pantallas/admin_socios.dart';
@@ -32,13 +31,12 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Gestión Socios - Club',
-          theme: ThemeData(
-          // Palette basada en los tonos de azul que proporcionaste
+          theme: ThemeData(          
           colorScheme: const ColorScheme(
             brightness: Brightness.light,
-            primary: Color(0xFF0404B9), // #0404b9 (vibrante)
+            primary: Color(0xFF0404B9), 
             onPrimary: Colors.white,
-            secondary: Color(0xFF001D5A), // #001d5a
+            secondary: Color(0xFF001D5A), 
             onSecondary: Colors.white,
             error: Colors.red,
             onError: Colors.white,

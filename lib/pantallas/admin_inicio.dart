@@ -14,7 +14,6 @@ class AdminInicioPantalla extends StatelessWidget {
       backgroundColor: const Color(0xFFF5F7FA),
       body: Column(
         children: [
-          // ===== HEADER =====
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -69,14 +68,12 @@ class AdminInicioPantalla extends StatelessWidget {
             ),
           ),
 
-          // ===== CONTENIDO =====
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(24),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Botón Gestionar Socios
                   _buildMenuButton(
                     context,
                     icon: Icons.group,
@@ -85,7 +82,6 @@ class AdminInicioPantalla extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
 
-                  // Botón Gestionar Eventos
                   _buildMenuButton(
                     context,
                     icon: Icons.event,
@@ -94,7 +90,6 @@ class AdminInicioPantalla extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
 
-                  // Botón Asuntos con badge
                   StreamBuilder<List<ModeloAsunto>>(
                     stream: DBServicio.streamAsuntos(),
                     builder: (context, snap) {

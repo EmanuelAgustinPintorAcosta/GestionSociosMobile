@@ -51,19 +51,14 @@ class _LandingPageState extends State<LandingPage> {
         controller: _scrollController,
         child: Column(
           children: [
-            // ===== HEADER =====
             _buildHeader(context),
 
-            // ===== SECCIÓN HISTORIA =====
             _buildHistoriaSection(),
 
-            // ===== SECCIÓN DEPORTES =====
             _buildDeportesSection(),
 
-            // ===== SECCIÓN CONTACTO =====
             _buildContactoSection(),
 
-            // ===== FOOTER =====
             _buildFooter(),
           ],
         ),
@@ -71,7 +66,6 @@ class _LandingPageState extends State<LandingPage> {
     );
   }
 
-  // ===== HEADER CON NAVEGACIÓN =====
   Widget _buildHeader(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
@@ -92,7 +86,6 @@ class _LandingPageState extends State<LandingPage> {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         child: Column(
           children: [
-            // Logo + Título
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -164,7 +157,6 @@ class _LandingPageState extends State<LandingPage> {
             ),
             const SizedBox(height: 20),
 
-            // Navegación Horizontal
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
@@ -205,7 +197,6 @@ class _LandingPageState extends State<LandingPage> {
     );
   }
 
-  // ===== SECCIÓN HISTORIA =====
   Widget _buildHistoriaSection() {
     return Container(
       key: _historiaKey,
@@ -215,7 +206,6 @@ class _LandingPageState extends State<LandingPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Título con decoración
           Row(
             children: [
               Container(
@@ -239,7 +229,6 @@ class _LandingPageState extends State<LandingPage> {
           ),
           const SizedBox(height: 24),
 
-          // Contenido placeholder
           Container(
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
@@ -265,7 +254,6 @@ class _LandingPageState extends State<LandingPage> {
     );
   }
 
-  // ===== SECCIÓN DEPORTES =====
   Widget _buildDeportesSection() {
     return Container(
       key: _deportesKey,
@@ -299,7 +287,6 @@ class _LandingPageState extends State<LandingPage> {
           ),
           const SizedBox(height: 24),
 
-          // Grid de deportes placeholder
           GridView.count(
             crossAxisCount: 2,
             mainAxisSpacing: 16,
@@ -372,7 +359,6 @@ class _LandingPageState extends State<LandingPage> {
     );
   }
 
-  // ===== SECCIÓN CONTACTO =====
   Widget _buildContactoSection() {
     return Container(
       key: _contactoKey,
@@ -406,7 +392,6 @@ class _LandingPageState extends State<LandingPage> {
           ),
           const SizedBox(height: 40),
 
-          // Redes sociales
           Center(
             child: Wrap(
               spacing: 24,
@@ -441,7 +426,6 @@ class _LandingPageState extends State<LandingPage> {
           ),
           const SizedBox(height: 40),
 
-          // Información de contacto
           Container(
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
@@ -521,7 +505,6 @@ class _LandingPageState extends State<LandingPage> {
     );
   }
 
-  // ===== FOOTER =====
   Widget _buildFooter() {
     return Container(
       width: double.infinity,

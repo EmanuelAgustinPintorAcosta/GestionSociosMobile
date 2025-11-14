@@ -6,7 +6,6 @@ import '../modelos/modelo_asunto.dart';
 class DBServicio {
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  // Socios
   static Stream<List<ModeloSocio>> streamSocios() {
     return _db.collection('usuarios').snapshots().map((snap) =>
         snap.docs.map((d) => ModeloSocio.fromMap(d.data()..['uid'] = d.id)).toList());
@@ -42,7 +41,6 @@ class DBServicio {
     await _db.collection('usuarios').doc(uid).delete();
   }
 
-  // Eventos
   static Stream<List<ModeloEvento>> streamEventos() {
     return _db.collection('eventos').orderBy('fecha', descending: false).snapshots().map(
         (snap) => snap.docs.map((d) => ModeloEvento.fromMap(d.data()..['id'] = d.id)).toList());
@@ -66,7 +64,6 @@ class DBServicio {
   }
 
 
-  // Asuntos (mensajes de socios al administrador)
   static Stream<List<ModeloAsunto>> streamAsuntos() {
     return _db.collection('asuntos').orderBy('fecha', descending: true).snapshots().map(
         (snap) => snap.docs

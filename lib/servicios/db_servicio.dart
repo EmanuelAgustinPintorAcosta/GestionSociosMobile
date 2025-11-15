@@ -12,6 +12,7 @@ class DBServicio {
   }
 
   static Future<Map<String, dynamic>?> obtenerSocio(String uid) async {
+    if (uid.isEmpty) return null;
     final doc = await _db.collection('usuarios').doc(uid).get();
     return doc.data();
   }
@@ -85,5 +86,25 @@ class DBServicio {
 
   static Future<void> marcarLeido(String id, bool leido) async {
     await _db.collection('asuntos').doc(id).update({'leido': leido});
+  }
+
+  // Métodos para responder asuntos
+  static Future<void> responderAsunto(String id, String respuesta) async {
+    await _db.collection('asuntos').doc(id).update({
+      'respuesta': respuesta,
+      'fechaRespuesta': Timestamp.now(),
+      'respondido': true,
+    });
+  }
+
+  static Stream<List<ModeloAsunto>> streamAsuntosPorSocio(String uid) {
+    return _db
+        .collection('asuntos')
+        .where('uidSocio', isEqualTo: uid)
+        .orderBy('fecha', descending: true)
+        .snapshots()
+        .map((snap) => snap.docs
+            .map((d) => ModeloAsunto.fromMap(d.data()..['id'] = d.id))
+            .toList());
   }
 }

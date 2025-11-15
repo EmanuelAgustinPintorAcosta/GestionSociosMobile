@@ -87,6 +87,14 @@ class SocioInicioPantalla extends StatelessWidget {
                     onPressed: () => Navigator.pushNamed(context, '/contactar_admin'),
                   ),
                   const SizedBox(height: 16),
+
+                  _buildMenuButton(
+                    context,
+                    icon: Icons.mail_outline,
+                    label: 'Mis Asuntos',
+                    onPressed: () => Navigator.pushNamed(context, '/mis_asuntos'),
+                  ),
+                  const SizedBox(height: 16),
   
                   _buildMenuButton(
                     context,

@@ -29,18 +29,32 @@ class _ContactarAdminPantallaState extends State<ContactarAdminPantalla> {
     setState(() => _enviando = true);
     final auth = Provider.of<AuthService>(context, listen: false);
     final usuario = auth.usuario;
-    final nombre = usuario?.displayName ?? '';
     final email = usuario?.email ?? '';
     final uid = usuario?.uid;
 
     try {
+      // Obtener datos del socio desde Firestore
       final docSocio = await DBServicio.obtenerSocio(uid ?? '');
-      final fotoBase64 = (docSocio?['fotoBase64'] as String?) ?? '';
+      
+      var nombreSocio = (docSocio?['nombre'] ?? '') as String;
+      var apellidoSocio = (docSocio?['apellido'] ?? '') as String;
+      
+      // Si están vacíos, fallback a displayName
+      if (nombreSocio.isEmpty && apellidoSocio.isEmpty) {
+        final displayName = usuario?.displayName ?? '';
+        if (displayName.isNotEmpty) {
+          final partes = displayName.split(' ');
+          nombreSocio = partes.isNotEmpty ? partes[0] : '';
+          apellidoSocio = partes.length > 1 ? partes.sublist(1).join(' ') : '';
+        }
+      }
+      
+      final fotoBase64 = (docSocio?['fotoBase64'] ?? '') as String;
 
       final asunto = ModeloAsunto(
         uidSocio: uid,
-        nombre: nombre.split(' ').isNotEmpty ? nombre.split(' ').first : '',
-        apellido: nombre.split(' ').length > 1 ? nombre.split(' ').sublist(1).join(' ') : '',
+        nombre: nombreSocio,
+        apellido: apellidoSocio,
         email: email,
         asunto: _asuntoCtrl.text.trim(),
         descripcion: _descripcionCtrl.text.trim(),

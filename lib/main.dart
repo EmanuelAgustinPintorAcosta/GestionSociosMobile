@@ -9,6 +9,7 @@ import 'pantallas/socio_eventos.dart';
 import 'pantallas/perfil_socio.dart';
 import 'pantallas/contactar_admin.dart';
 import 'pantallas/admin_asuntos.dart';
+import 'pantallas/mis_asuntos.dart';
 import 'servicios/firebase_servicio.dart';
 import 'package:provider/provider.dart';
 import 'servicios/auth_servicio.dart';
@@ -75,6 +76,7 @@ class MyApp extends StatelessWidget {
           '/perfil': (context) => const PerfilSocioPantalla(),
           '/contactar_admin': (context) => const ContactarAdminPantalla(),
           '/admin_asuntos': (context) => const AdminAsuntosPantalla(),
+          '/mis_asuntos': (context) => const MisAsuntosPantalla(),
         },
       ),
     );

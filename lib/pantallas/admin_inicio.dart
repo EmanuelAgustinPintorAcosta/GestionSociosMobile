@@ -90,6 +90,14 @@ class AdminInicioPantalla extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
 
+                  _buildMenuButton(
+                    context,
+                    icon: Icons.receipt_long,
+                    label: 'Cuotas de Socios',
+                    onPressed: () => Navigator.pushNamed(context, '/admin_cuotas'),
+                  ),
+                  const SizedBox(height: 16),
+
                   StreamBuilder<List<ModeloAsunto>>(
                     stream: DBServicio.streamAsuntos(),
                     builder: (context, snap) {

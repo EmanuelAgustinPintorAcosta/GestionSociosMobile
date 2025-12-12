@@ -7,6 +7,8 @@ class ModeloSocio {
   String email;
   String? fotoUrl;
   String? fotoBase64;
+  String? estadoCuota; // NUEVO: "activo", "deudor"
+  String? ultimaCuotaPagada; // NUEVO: "noviembre", "diciembre", etc.
 
   ModeloSocio({
     this.uid,
@@ -17,6 +19,8 @@ class ModeloSocio {
     required this.email,
     this.fotoUrl,
     this.fotoBase64,
+    this.estadoCuota,
+    this.ultimaCuotaPagada,
   });
 
   factory ModeloSocio.fromMap(Map<String, dynamic> m) {
@@ -31,6 +35,8 @@ class ModeloSocio {
       email: (m['email'] ?? '') as String,
       fotoUrl: (m['fotoUrl'] as String?) ?? '',
       fotoBase64: (m['fotoBase64'] as String?) ?? '',
+      estadoCuota: (m['estado_cuota'] as String?) ?? 'deudor',
+      ultimaCuotaPagada: (m['ultima_cuota_pagada'] as String?),
     );
   }
 
@@ -44,6 +50,8 @@ class ModeloSocio {
       'uid': uid,
       if (fotoUrl != null && fotoUrl!.isNotEmpty) 'fotoUrl': fotoUrl,
       if (fotoBase64 != null && fotoBase64!.isNotEmpty) 'fotoBase64': fotoBase64,
+      'estado_cuota': estadoCuota ?? 'deudor',
+      if (ultimaCuotaPagada != null) 'ultima_cuota_pagada': ultimaCuotaPagada,
     };
   }
 }

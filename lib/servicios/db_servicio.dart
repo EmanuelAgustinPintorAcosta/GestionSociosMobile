@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../modelos/modelo_socio.dart';
 import '../modelos/modelo_evento.dart';
 import '../modelos/modelo_asunto.dart';
+import '../modelos/modelo_cuota.dart';
 
 class DBServicio {
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -107,4 +108,66 @@ class DBServicio {
             .map((d) => ModeloAsunto.fromMap(d.data()..['id'] = d.id))
             .toList());
   }
+
+  // ==================== MÉTODOS PARA CUOTAS ====================
+  
+  static Stream<List<ModeloCuota>> streamCuotasPorSocio(String uid) {
+    return _db
+        .collection('usuarios')
+        .doc(uid)
+        .collection('cuotas')
+        .snapshots()
+        .map((snap) {
+          final docs = snap.docs
+              .map((d) => ModeloCuota.fromMap(d.data(), d.id))
+              .toList();
+          // Ordenar por año ascendente, luego por mes ascendente (más próximas primero)
+          docs.sort((a, b) {
+            // Comparar años en orden ascendente
+            int yearCompare = a.anio.compareTo(b.anio);
+            if (yearCompare != 0) return yearCompare;
+            // Si mismo año, ordenar meses ascendentes
+            return int.parse(a.mes).compareTo(int.parse(b.mes));
+          });
+          return docs;
+        });
+  }
+
+  static Future<ModeloCuota?> obtenerCuota(String uid, String mes) async {
+    final doc = await _db
+        .collection('usuarios')
+        .doc(uid)
+        .collection('cuotas')
+        .doc(mes)
+        .get();
+    if (!doc.exists) return null;
+    return ModeloCuota.fromMap(doc.data()!, doc.id);
+  }
+
+  static Future<void> actualizarCuota(String uid, String mes, Map<String, dynamic> data) async {
+    await _db
+        .collection('usuarios')
+        .doc(uid)
+        .collection('cuotas')
+        .doc(mes)
+        .update(data);
+  }
+
+  static Stream<List<ModeloSocio>> streamSociosConEstadoCuota() {
+    return _db
+        .collection('usuarios')
+        .where('rol', isEqualTo: 'socio')
+        .snapshots()
+        .map((snap) =>
+            snap.docs.map((d) => ModeloSocio.fromMap(d.data()..['uid'] = d.id)).toList());
+  }
+
+  static Future<void> actualizarEstadoCuota(String uid, String estado, String? ultimaCuota) async {
+    final data = {'estado_cuota': estado};
+    if (ultimaCuota != null) {
+      data['ultima_cuota_pagada'] = ultimaCuota;
+    }
+    await _db.collection('usuarios').doc(uid).update(data);
+  }
+
 }

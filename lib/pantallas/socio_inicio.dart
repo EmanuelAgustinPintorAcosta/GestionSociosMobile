@@ -95,6 +95,14 @@ class SocioInicioPantalla extends StatelessWidget {
                     onPressed: () => Navigator.pushNamed(context, '/mis_asuntos'),
                   ),
                   const SizedBox(height: 16),
+
+                  _buildMenuButton(
+                    context,
+                    icon: Icons.receipt_long,
+                    label: 'Mis Cuotas',
+                    onPressed: () => Navigator.pushNamed(context, '/mis_cuotas'),
+                  ),
+                  const SizedBox(height: 16),
   
                   _buildMenuButton(
                     context,

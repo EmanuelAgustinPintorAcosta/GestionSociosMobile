@@ -618,6 +618,9 @@ class _AdminAsuntosPantallaState extends State<AdminAsuntosPantalla> {
                                       respuestaCtrl.text.trim(),
                                     );
 
+                                    // Marcar como leído cuando el admin responde
+                                    await DBServicio.marcarLeido(asunto.id ?? '', true);
+
                                     if (context.mounted) {
                                       ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(

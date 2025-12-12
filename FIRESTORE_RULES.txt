@@ -1,0 +1,32 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Usuarios - solo admin puede listar todos
+    match /usuarios/{uid} {
+      allow read: if request.auth.uid == uid || request.auth.uid != null && get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.rol == 'admin';
+      allow write: if request.auth.uid == uid || request.auth.uid != null && get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.rol == 'admin';
+    }
+
+    // Cuotas - cada socio ve sus propias cuotas
+    match /usuarios/{uid}/cuotas/{mes} {
+      allow read: if request.auth.uid == uid || request.auth.uid != null && get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.rol == 'admin';
+      allow write: if request.auth.uid != null && get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.rol == 'admin';
+    }
+
+    // Eventos
+    match /eventos/{document=**} {
+      allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid != null && get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.rol == 'admin';
+    }
+
+    // Asuntos
+    match /asuntos/{document=**} {
+      allow read: if request.auth.uid != null;
+      allow create: if request.auth.uid != null && request.resource.data.uidSocio == request.auth.uid;
+      allow update: if request.auth.uid != null && get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.rol == 'admin';
+      allow delete: if request.auth.uid != null && get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.rol == 'admin';
+    }
+  }
+}
